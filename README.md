@@ -11,3 +11,10 @@ conda create --name sartorius python=3.7
 conda activate sartorius
 pip install -r requirements.txt
  ```   
+
+2. Download dataset
+
+```bash
+cd data
+kaggle competitions download -c sartorius-cell-instance-segmentation
+ ```   
