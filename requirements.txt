@@ -1,1 +1,12 @@
 kaggle
+numpy
+pandas
+opencv-python
+sklearn
+matplotlib
+plotly
+pycocotools
+scikit-image
+tqdm
+pillow
+git+git://github.com/waspinator/pycococreator.git@0.2.0
