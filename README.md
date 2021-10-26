@@ -18,3 +18,9 @@ pip install -r requirements.txt
 cd data
 kaggle competitions download -c sartorius-cell-instance-segmentation
  ```   
+
+3. Download detectron2 for local installation (for inference)
+
+```bash
+kaggle datasets download -d slawekbiel/detectron-05
+```
