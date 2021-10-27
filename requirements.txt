@@ -8,5 +8,5 @@ plotly
 pycocotools
 scikit-image
 tqdm
+imantics
 pillow
-git+git://github.com/waspinator/pycococreator.git@0.2.0
