@@ -56,8 +56,7 @@ def create_annotation_info(annotation_id, image_id, category_id, binary_mask):
     return annotation_info
 
 
-def convert_coco(train_df):
-    cat_ids = {name: i + 1 for i, name in enumerate(train_df.cell_type.unique())}
+def convert_coco(train_df, cat_ids):
     categories = [{'id': cls_id, 'name': cls_name} for cls_name, cls_id in cat_ids.items()]
     images = [
         {

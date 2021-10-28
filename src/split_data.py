@@ -38,10 +38,11 @@ random.shuffle(val_images)
 new_train_df = train_df[train_df['id'].isin(train_images)]
 val_df = train_df[train_df['id'].isin(val_images)]
 
-train_json = convert_coco(new_train_df)
+category_ids = {'shsy5y': 1, 'astro': 2, 'cort': 3}
+train_json = convert_coco(new_train_df, category_ids)
 train_path = os.path.join("../data", "train_annotations.json")
 write_json(train_json, train_path)
 
-val_json = convert_coco(val_df)
+val_json = convert_coco(val_df, category_ids)
 val_path = os.path.join("../data", "val_annotations.json")
 write_json(val_json, val_path)
