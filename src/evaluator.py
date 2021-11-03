@@ -139,17 +139,31 @@ class CustomEvaluator(DatasetEvaluator):
         rle = mask_util.merge(rles)
         return rle
 
-    def score(self, pred, anns, height, width):
+    # For polygon annotation
+    # def score(self, pred, anns, height, width):
+    #     pred_masks = pred['instances'].pred_masks.cpu().numpy()
+    #     enc_preds = [mask_util.encode(np.asarray(p, order='F')) for p in pred_masks]
+    #     enc_targets = [self.annToRLE(ann['segmentation'], height, width) for ann in anns]
+    #     ious = mask_util.iou(enc_preds, enc_targets, [0] * len(enc_targets))
+    #     precisions = []
+    #     for t in np.arange(0.5, 1.0, 0.05):
+    #         tp, fp, fn = self.precision_at(t, ious)
+    #         p = tp / (tp + fp + fn)
+    #         precisions.append(p)
+    #     return np.mean(precisions)
+
+    # For RLE annotation
+    def score(self, pred, targ):
         pred_masks = pred['instances'].pred_masks.cpu().numpy()
         enc_preds = [mask_util.encode(np.asarray(p, order='F')) for p in pred_masks]
-        enc_targets = [self.annToRLE(ann['segmentation'], height, width) for ann in anns]
-        ious = mask_util.iou(enc_preds, enc_targets, [0] * len(enc_targets))
-        precisions = []
+        enc_targs = list(map(lambda x: x['segmentation'], targ))
+        ious = mask_util.iou(enc_preds, enc_targs, [0] * len(enc_targs))
+        prec = []
         for t in np.arange(0.5, 1.0, 0.05):
             tp, fp, fn = self.precision_at(t, ious)
             p = tp / (tp + fp + fn)
-            precisions.append(p)
-        return np.mean(precisions)
+            prec.append(p)
+        return np.mean(prec)
 
     def reset(self):
         self._predictions = []
@@ -171,7 +185,8 @@ class CustomEvaluator(DatasetEvaluator):
             else:
                 annotations = self.annotations_cache[input['image_id']]
                 h, w = input['height'], input['width']
-                self.scores.append(self.score(output, annotations, h, w))
+                # self.scores.append(self.score(output, annotations, h, w))
+                self.scores.append(self.score(output, annotations))
 
             if "instances" in output:
                 instances = output["instances"].to(self._cpu_device)
