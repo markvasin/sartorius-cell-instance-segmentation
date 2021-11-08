@@ -1,0 +1,68 @@
+MODEL:
+  META_ARCHITECTURE: "GeneralizedRCNN"
+  BACKBONE:
+    NAME: "build_resnest_fpn_backbone"
+  WEIGHTS: "https://s3.us-west-1.wasabisys.com/resnest/detectron/resnest200_detectron-02644020.pth"
+  MASK_ON: True
+  RESNETS:
+    DEPTH: 200
+    STRIDE_IN_1X1: False
+    RADIX: 2
+    DEFORM_ON_PER_STAGE: [ False, True, True, True ] # on Res3,Res4,Res5
+    DEFORM_MODULATED: True
+    DEFORM_NUM_GROUPS: 2
+    NORM: "BN"
+    OUT_FEATURES: ["res2", "res3", "res4", "res5"]
+  FPN:
+    IN_FEATURES: ["res2", "res3", "res4", "res5"]
+    NORM: "BN"
+  ANCHOR_GENERATOR:
+    SIZES: [ [ 4 ], [ 9 ], [ 17 ], [ 31 ], [ 64 ], [ 127 ] ]  # One size for each in feature map
+    ASPECT_RATIOS: [ [ 0.25, 0.5, 1.0, 2.0, 4.0 ] ]  # Three aspect ratios (same for all in feature maps)
+  RPN:
+    IN_FEATURES: [ "p2" ,"p2", "p3", "p4", "p5", "p6" ]
+    BATCH_SIZE_PER_IMAGE: 256
+    POST_NMS_TOPK_TEST: 1000
+    POST_NMS_TOPK_TRAIN: 1000
+    PRE_NMS_TOPK_TEST: 2000
+    PRE_NMS_TOPK_TRAIN: 3000
+  ROI_HEADS:
+    NAME: CascadeROIHeads
+    IN_FEATURES: ["p2", "p3", "p4", "p5"]
+  ROI_BOX_HEAD:
+    NAME: "FastRCNNConvFCHead"
+    POOLER_RESOLUTION: 7
+    NUM_CONV: 4
+    NUM_FC: 1
+    NORM: "BN"
+    CLS_AGNOSTIC_BBOX_REG: True
+  ROI_MASK_HEAD:
+    NAME: "MaskRCNNConvUpsampleHead"
+    POOLER_RESOLUTION: 14
+    NUM_CONV: 8
+    NORM: "BN"
+  PIXEL_MEAN: [ 128, 128, 128 ]
+  PIXEL_STD: [ 11.578, 11.578, 11.578 ]
+DATASETS:
+  TRAIN: ("coco_2017_train",)
+  TEST: ("coco_2017_val",)
+SOLVER:
+  IMS_PER_BATCH: 16
+  BASE_LR: 0.02
+  STEPS: (60000, 80000)
+  MAX_ITER: 90000
+
+INPUT:
+  MIN_SIZE_TRAIN: (440, 480, 520, 560, 580, 620)
+
+  CROP:
+    ENABLED: False
+  FORMAT: "BGR"
+
+TEST:
+  DETECTIONS_PER_IMAGE: 1000
+  PRECISE_BN:
+    ENABLED: False
+  AUG:
+    ENABLED: False
+VERSION: 2
