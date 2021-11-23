@@ -9,7 +9,7 @@ from detectron2.utils.logger import setup_logger
 from detectron2.utils.visualizer import Visualizer, ColorMode
 
 import src.utils.project_utils as util
-from src.augmentations import get_dataset_mapper
+from src.det2.augmentations import get_dataset_mapper
 
 setup_logger()
 data_dir = util.get_data_path()

@@ -4,8 +4,8 @@ from detectron2.data import DatasetMapper, build_detection_test_loader, build_de
 from detectron2.engine import DefaultTrainer
 from detectron2.utils.logger import setup_logger
 
-from src.augmentations import get_dataset_mapper
-from src.evaluator import CustomEvaluator, LossEvalHook
+from src.det2.augmentations import get_dataset_mapper
+from src.det2.evaluator import CustomEvaluator, LossEvalHook
 
 setup_logger()
 

@@ -3,8 +3,8 @@ from collections import Counter
 
 from src.utils.project_utils import get_data_path, read_json
 
-train_path = os.path.join(get_data_path(), 'train_annotations.json')
-val_path = os.path.join(get_data_path(), 'val_annotations.json')
+train_path = os.path.join(get_data_path(), 'sartorius-mask-data', 'annotations_train.json')
+val_path = os.path.join(get_data_path(), 'sartorius-mask-data', 'annotations_val.json')
 
 train_json = read_json(train_path)
 val_json = read_json(val_path)

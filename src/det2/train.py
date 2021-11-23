@@ -5,7 +5,7 @@ from detectron2.config import get_cfg
 from detectron2.utils.logger import setup_logger
 
 from src.Trainer import MyTrainer
-from src.swin.config import add_swins_config
+from src.det2.swin.config import add_swins_config
 
 setup_logger()
 
